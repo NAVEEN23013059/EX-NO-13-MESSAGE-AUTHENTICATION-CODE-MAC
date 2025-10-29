@@ -1,5 +1,8 @@
 # EX-NO-13-MESSAGE-AUTHENTICATION-CODE-MAC
 
+## DEVELOPED BY: NAVEEN.S
+## REGISTER NUMBER: 212223240106
+
 ## AIM:
 To implement MESSAGE AUTHENTICATION CODE(MAC)
 
@@ -25,11 +28,55 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 5. Security: The security of the MAC relies on the secret key \( K \) and the strength of the hash function \( H \), ensuring that an attacker cannot forge a valid MAC without knowledge of the key.
 
 ## Program:
+```
+#include <stdio.h>
+#include <string.h>
 
+#define MAC_SIZE 32 
+void computeMAC(const char *key, const char *message, char *mac) {
+    int key_len = strlen(key);
+    int msg_len = strlen(message);
+        for (int i = 0; i < MAC_SIZE; i++) {
+        mac[i] = key[i % key_len] ^ message[i % msg_len]; 
+    }
+    mac[MAC_SIZE] = '\0';
 
+int main() {
+    char key[100], message[100];
+    char mac[MAC_SIZE + 1]; // Buffer for MAC (+1 for null terminator)
+    char receivedMAC[MAC_SIZE + 1]; // Buffer for input of received MAC
 
+    printf("Enter the secret key: ");
+    scanf("%s", key);
+
+    printf("Enter the message: ");
+    scanf("%s", message);
+
+    computeMAC(key, message, mac);
+
+    printf("Computed MAC (in hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        printf("%02x", (unsigned char)mac[i]); 
+    }
+    printf("\n");
+
+    printf("Enter the received MAC (as hex): ");
+    for (int i = 0; i < MAC_SIZE; i++) {
+        scanf("%02hhx", &receivedMAC[i]);
+    }
+
+    if (memcmp(mac, receivedMAC, MAC_SIZE) == 0) {
+        printf("MAC verification successful. Message is authentic.\n");
+    } else {
+        printf("MAC verification failed. Message is not authentic.\n");
+    }
+
+    return 0;
+}
+```
 ## Output:
 
+<img width="1851" height="905" alt="image" src="https://github.com/user-attachments/assets/89e4367c-ee9a-405b-b248-0a89be44182c" />
 
 ## Result:
 The program is executed successfully.
